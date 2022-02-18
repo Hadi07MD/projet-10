@@ -8,6 +8,7 @@
       
 		$person = array($FirstName, $LastName , $Age , $gender); 
       
+		
 		$fichier = file_get_contents('person.json');
 		$data = json_decode($fichier);
 	
