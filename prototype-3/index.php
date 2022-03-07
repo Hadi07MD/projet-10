@@ -1,9 +1,9 @@
 <?php
     include 'config.php';
+    include 'employeeManager.php';
 
-    $sqlGetData = 'SELECT ID, First_name, Last_name, Age, Gender FROM employees';
-    $result = mysqli_query($conn ,$sqlGetData);
-    $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $employeeManager = new EmployeeManager();
+    $data = $employeeManager->getAllEmployees($conn);
 
 ?>
 
@@ -38,8 +38,8 @@
                 <td><?= $person['Age']?></td>
                 <td><?= $person['Gender']?></td>
                 <td>
-                    <a href="edit.php?id=<?php echo $person['ID'] ?>">Edit</a>
-                    <a href="delete.php?id=<?php echo $person['ID'] ?>">delete</a>
+                    <a href="edit.php?id=<?php echo $person['ID']?>">Edit</a>
+                    <a href="delete.php?id=<?php echo $person['ID']?>">delete</a>
                 </td>
             </tr>
             <?php }?>
