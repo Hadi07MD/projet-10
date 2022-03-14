@@ -1,64 +1,105 @@
 <?php
     include 'employee.php';
+
     class EmployeeManager {
 
-        public function getAllEmployees($conn){
-            $sqlGetData = 'SELECT ID, First_name, Last_name, Age, Gender FROM employees';
-            $result = mysqli_query($conn ,$sqlGetData);
-            $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            return $data;
+        private $Connection = null;
+
+        private function getConnection(){
+            if(is_null($this->Connection)){
+                $this->Connection =  mysqli_connect('localhost', 'Hadi', 'HADI1998', 'prototype');
+
+                if(!$this->Connection){
+                    $message = 'Connection Error: ' .mysqli_connect_error();
+                    throw new Exception($message);
+                }
+            }
+            return $this->Connection;
+        }
+
+   
+
+        public function getAllEmployees(){
+            $sqlGetData = 'SELECT id, first_name, last_name, age, gender FROM employees_test';
+            $result = mysqli_query($this->getConnection() ,$sqlGetData);
+            $employeesList = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+            $employees = array();
+            foreach($employeesList as $employee_list){
+                $employee = new Employee();
+                $employee->setId($employee_list['id']);
+                $employee->setFirstName($employee_list['first_name']);
+                $employee->setLastName($employee_list['last_name']);
+                $employee->setGender($employee_list['gender']);
+                $employee->setAge($employee_list['age']);
+                array_push($employees, $employee);
+            }
+
+            return $employees;
         }
 
 
-        public function insertEmployee($conn, $employee){
-            $First_Name = $employee->getFirstName();
-            $Last_Name = $employee->getLastName();
-            $Age = $employee->getAge();
-            $Gender = $employee->getGender();
+        public function insertEmployee($employee){
+            $firstName = $employee->getFirstName();
+            $lastName = $employee->getLastName();
+            $age = $employee->getAge();
+            $gender = $employee->getGender();
 
                  // sql insert query
-        $sqlInsertQuery = "INSERT INTO employees(First_name, Last_name, Age, Gender) 
-                            VALUES('$First_Name', 
-                                    '$Last_Name',
-                                    '$Age', 
-                                    '$Gender')";
+        $sqlInsertQuery = "INSERT INTO employees_test(first_name, last_name, age, gender) 
+                            VALUES('$firstName', 
+                                    '$lastName',
+                                    '$age', 
+                                    '$gender')";
 
-        mysqli_query($conn, $sqlInsertQuery);
+        mysqli_query($this->getConnection(), $sqlInsertQuery);
         }
 
 
-        public function deleteEmployee($conn, $id){
+        public function deleteEmployee($id){
             $sqlDeleteQuery = "DELETE FROM employees_test WHERE id= '$id'";
 
-            mysqli_query($conn, $sqlDeleteQuery);
+            mysqli_query($this->getConnection(), $sqlDeleteQuery);
         }
 
 
-        public function editEmployee($conn, $employee, $id){
-            $First_name = $employee->getFirstName();
-            $Last_name = $employee->getLastName();
-            $Gender = $employee->getGender();
-            $Age = $employee->getAge();
+        public function editEmployee($id, $first_name, $last_name, $gender, $age){
      
             // Update query
-            $sqlUpdateQuery = "UPDATE employees SET 
-                         First_name='$first_name', Last_name='$last_name', Age='$age', Gender='$gender'
-                         WHERE ID=$id";
+            $sqlUpdateQuery = "UPDATE employees_test SET 
+                         first_name='$first_name', 
+                         last_name='$last_name', 
+                         age='$age', 
+                         gender='$gender'
+                         WHERE id=$id";
      
              // Make query 
-             mysqli_query($conn, $sqlUpdateQuery);
+             mysqli_query($this->getConnection(), $sqlUpdateQuery);
+
+             if(mysqli_error($this->getConnection())){
+                 $msg = 'Erreur' . mysqli_errno($this->getConnection());
+                 throw new Exception($msg);
+             }
        
         }
 
-        public function getEmployee($conn, $id){
-            $sqlGetQuery = "SELECT * FROM employees WHERE ID= $id";
-    
-        // get result
-        $result = mysqli_query($conn, $sqlGetQuery);
-    
-        // fetch to array
-        $employee = mysqli_fetch_assoc($result);
-        return $employee;
+        public function getEmployee($id){
+            $sqlGetQuery = "SELECT * FROM employees_test WHERE id= $id";
+        
+            // get result
+            $result = mysqli_query($this->getConnection(), $sqlGetQuery);
+        
+            // fetch to array
+            $employee_data = mysqli_fetch_assoc($result);
+
+            $employee = new Employee();
+            $employee->setId($employee_data['id']);
+            $employee->setFirstName($employee_data['first_name']);
+            $employee->setLastName($employee_data['last_name']);
+            $employee->setAge($employee_data['age']);
+            $employee->setGender($employee_data['gender']);
+            
+            return $employee;
         }
     }
 

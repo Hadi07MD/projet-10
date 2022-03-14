@@ -3,7 +3,7 @@
     include 'employeeManager.php';
 
     $employeeManager = new EmployeeManager();
-    $data = $employeeManager->getAllEmployees($conn);
+    $data = $employeeManager->getAllEmployees();
 
 ?>
 
@@ -29,17 +29,17 @@
             </tr>
 
             <?php
-                    foreach($data as $person){
+                    foreach($data as $employee){
             ?>
 
             <tr>
-                <td><?= $person['First_name']?></td>
-                <td><?= $person['Last_name']?></td>
-                <td><?= $person['Age']?></td>
-                <td><?= $person['Gender']?></td>
+                <td><?= $employee->getFirstName()?></td>
+                <td><?= $employee->getLastName()?></td>
+                <td><?= $employee->getAge()?></td>
+                <td><?= $employee->getGender()?></td>
                 <td>
-                    <a href="edit.php?id=<?php echo $person['ID']?>">Edit</a>
-                    <a href="delete.php?id=<?php echo $person['ID']?>">delete</a>
+                    <a href="edit.php?id=<?php echo $employee->getId() ?>">Edit</a>
+                    <a href="delete.php?id=<?php echo $employee->getId() ?>">delete</a>
                 </td>
             </tr>
             <?php }?>
