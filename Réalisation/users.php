@@ -60,4 +60,3 @@
             $this->picture= $value;
         }    
     }
-?>
