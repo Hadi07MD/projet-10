@@ -1,24 +1,5 @@
 
-<?php
 
-    include 'config.php';
-	include 'users.php';
-	include 'userHandler.php';
-//
-    if(!empty($_POST)){
-		$users = new users();	
-		$userHandler = new UserAdd();
-        $users->setFirstName($_POST['fname']);
-        $users->setLastName($_POST['lname']);
-        $users->setBdate($_POST['bdate']);
-        $users->setDep($_POST['dep']);
-		$users->setSalary($_POST['salary']);
-		$users->setFunc($_POST['func']);
-		$users->setPicture($_POST['picture']);
-		$userHandler->insertusers($conn, $users);
-        header("Location: index.php");
-    }
-?>
 
 
 <!DOCTYPE html>
