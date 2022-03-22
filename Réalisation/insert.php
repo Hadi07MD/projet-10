@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +23,7 @@
     </button>
   </nav>
 </div>
-<!-- NAV BAR -->
+
 <div>
         <div>
 		<br>
@@ -86,12 +82,13 @@
 </div>
 </body>
 </html>
+
 <?php
 
     include 'config.php';
 	include 'users.php';
 	include 'userHandler.php';
-//
+
     if(!empty($_POST)){
 		$users = new users();	
 		$userHandler = new UserAdd();

@@ -3,7 +3,7 @@
     include 'config.php';
     include 'users.php';
     include 'userHandler.php';
-//
+
     $userHandler = new UserAdd();
     if(isset($_GET['id'])){
         $id = $_GET['id'];
